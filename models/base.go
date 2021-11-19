@@ -29,3 +29,13 @@ func init() {
 		panic("failed to connect database")
 	}
 }
+
+func Get(result interface{}, where map[string]interface{}) interface{} {
+	db.Where(where).First(&result)
+	return result
+}
+
+func GetAll(result interface{}, where map[string]interface{}) interface{} {
+	db.Where(where).Find(&result)
+	return result
+}

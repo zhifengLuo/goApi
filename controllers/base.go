@@ -14,7 +14,7 @@ func success(c *gin.Context, data interface{}) {
 
 func failure(c *gin.Context, code int, msg string) {
 	c.JSON(http.StatusOK, gin.H{
-		"code": code,
-		"msg":  msg,
+		"code":  code,
+		"error": msg,
 	})
 }

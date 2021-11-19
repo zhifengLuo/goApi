@@ -4,36 +4,44 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"goapi/controllers"
+	"goapi/middleware"
 	"net/http"
 	"strings"
 )
 
 func NewRouter() *gin.Engine {
-	router := gin.New()
+	// Default 使用 Logger 和 Recovery 中间件
+	r := gin.Default()
 
-	// 中间件
-	router.Use(gin.Logger())
-	router.Use(cors())
-	// router.Use(gin.Recovery())
-	// router.Use(middleware.AuthMiddleware())
+	// 自定义中间件
+	r.Use(cors())
+	// router.Use(middleware.Auth())
+
+	r.NoRoute(func(c *gin.Context) {
+		c.JSON(400, gin.H{"code": 400, "error": "Bad Request"})
+	})
 
 	// 例子
 	demo := new(controllers.DemoController)
-	router.GET("/health", demo.Status)
-	router.GET("/test", controllers.Test)
-	router.GET("/json", controllers.DemoCtl.SendJson)
+	r.GET("/health", demo.Status)
+	r.GET("/test", controllers.Test)
+	r.GET("/json", controllers.DemoCtl.SendJson)
 
-	// 路由分组
-	/*v1 := router.Group("v1")
+	// basic auth
+	authorized := r.Group("/user")
+	authorized.Use(middleware.AuthBasic())
 	{
-		userGroup := v1.Group("user")
-		{
-			user := new(controllers.UserController)
-			userGroup.GET("/:id", user.Info)
-		}
-	}*/
+		authorized.GET("/info", controllers.UserCtl.Info)
+	}
 
-	return router
+	// casbin auth
+	auth := r.Group("/admin")
+	auth.Use(middleware.NewAuthorizer())
+	{
+		auth.GET("/index", controllers.UserCtl.Index)
+	}
+
+	return r
 }
 
 // 跨域
