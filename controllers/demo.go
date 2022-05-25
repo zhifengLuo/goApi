@@ -7,9 +7,9 @@ import (
 
 type DemoController struct{}
 
-var DemoCtl DemoController
+var DemoCtl = new(DemoController)
 
-func (t DemoController) Status(c *gin.Context) {
+func TestOk(c *gin.Context) {
 	c.String(http.StatusOK, "Working!")
 }
 
@@ -19,8 +19,4 @@ func (t DemoController) SendJson(c *gin.Context) {
 	data["list"] = []int{1, 3, 5, 7}
 	data["total"] = 100
 	success(c, data)
-}
-
-func Test(c *gin.Context) {
-	c.JSON(200, gin.H{"code": 0, "message": "demo"})
 }

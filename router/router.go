@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"goapi/controllers"
-	"goapi/middleware"
 	"net/http"
 	"strings"
 )
@@ -21,25 +20,26 @@ func NewRouter() *gin.Engine {
 		c.JSON(400, gin.H{"code": 400, "error": "Bad Request"})
 	})
 
-	// 例子
-	demo := new(controllers.DemoController)
-	r.GET("/health", demo.Status)
-	r.GET("/test", controllers.Test)
-	r.GET("/json", controllers.DemoCtl.SendJson)
+	// demo
+	// r.GET("/health", controllers.TestOk)
+	// r.GET("/demo", controllers.DemoCtl.SendJson)
 
 	// basic auth
-	authorized := r.Group("/user")
-	authorized.Use(middleware.AuthBasic())
-	{
-		authorized.GET("/info", controllers.UserCtl.Info)
-	}
+	// authorized := r.Group("/user")
+	// authorized.Use(middleware.AuthBasic())
+	// {
+	// 	authorized.GET("/info", controllers.DemoCtl.SendJson)
+	// }
 
 	// casbin auth
-	auth := r.Group("/admin")
-	auth.Use(middleware.NewAuthorizer())
-	{
-		auth.GET("/index", controllers.UserCtl.Index)
-	}
+	// auth := r.Group("/admin")
+	// auth.Use(middleware.NewAuthorizer())
+	// {
+	// 	auth.GET("/index", controllers.UserCtl.Index)
+	// }
+
+	r.GET("/user/:id", controllers.GetUser)
+	r.GET("/area", controllers.Areas)
 
 	return r
 }

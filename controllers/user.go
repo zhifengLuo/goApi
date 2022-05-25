@@ -2,16 +2,15 @@ package controllers
 
 import (
 	"github.com/gin-gonic/gin"
+	"goapi/models"
 )
 
-type UserController struct{}
-
-var UserCtl UserController
-
-func (t UserController) Info(c *gin.Context) {
-
+func GetUser(c *gin.Context) {
+	id := c.Param("id")
+	success(c, "user "+id+" info")
 }
 
-func (t UserController) Index(c *gin.Context) {
-	success(c, "admin/index")
+func Areas(c *gin.Context) {
+	data := models.GetAllProvince()
+	success(c, data)
 }
