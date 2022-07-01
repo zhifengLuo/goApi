@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"github.com/gin-gonic/gin"
+	"goapi/config"
 	"net/http"
 )
 
@@ -18,5 +19,10 @@ func (t DemoController) SendJson(c *gin.Context) {
 	data["msg"] = "articles"
 	data["list"] = []int{1, 3, 5, 7}
 	data["total"] = 100
-	success(c, data)
+	Success(c, data)
+}
+
+func (t DemoController) TestConfig(c *gin.Context) {
+	data := config.Get("Taxonomies")
+	Success(c, data)
 }

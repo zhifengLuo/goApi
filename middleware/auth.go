@@ -3,12 +3,14 @@ package middleware
 import (
 	"github.com/casbin/casbin/v2"
 	"github.com/gin-gonic/gin"
+	"goapi/models"
+	_ "gorm.io/driver/mysql"
 	"net/http"
 )
 
 // NewAuthorizer returns the authorizer, uses a Casbin enforcer as input
 func NewAuthorizer() gin.HandlerFunc {
-	e, _ := casbin.NewEnforcer("config/casbin_model.conf", "config/casbin_policy.csv")
+	e := models.NewEnforce()
 	a := &BasicAuthorizer{enforcer: e}
 
 	return func(c *gin.Context) {
@@ -23,14 +25,14 @@ type BasicAuthorizer struct {
 	enforcer *casbin.Enforcer
 }
 
-// GetUserName gets the user name from the request.
+// GetUserName gets the api name from the request.
 // Currently, only HTTP basic authentication is supported
 func (a *BasicAuthorizer) GetUserName(r *http.Request) string {
 	username, _, _ := r.BasicAuth()
 	return username
 }
 
-// CheckPermission checks the user/method/path combination from the request.
+// CheckPermission checks the api/method/path combination from the request.
 // Returns true (permission granted) or false (permission forbidden)
 func (a *BasicAuthorizer) CheckPermission(r *http.Request) bool {
 	user := a.GetUserName(r)

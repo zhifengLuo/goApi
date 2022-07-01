@@ -3,7 +3,6 @@ package router
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"goapi/controllers"
 	"net/http"
 	"strings"
 )
@@ -14,32 +13,14 @@ func NewRouter() *gin.Engine {
 
 	// 自定义中间件
 	r.Use(cors())
-	// router.Use(middleware.Auth())
 
 	r.NoRoute(func(c *gin.Context) {
 		c.JSON(400, gin.H{"code": 400, "error": "Bad Request"})
 	})
 
-	// demo
-	// r.GET("/health", controllers.TestOk)
-	// r.GET("/demo", controllers.DemoCtl.SendJson)
-
-	// basic auth
-	// authorized := r.Group("/user")
-	// authorized.Use(middleware.AuthBasic())
-	// {
-	// 	authorized.GET("/info", controllers.DemoCtl.SendJson)
-	// }
-
-	// casbin auth
-	// auth := r.Group("/admin")
-	// auth.Use(middleware.NewAuthorizer())
-	// {
-	// 	auth.GET("/index", controllers.UserCtl.Index)
-	// }
-
-	r.GET("/user/:id", controllers.GetUser)
-	r.GET("/area", controllers.Areas)
+	// 分组
+	groupApi(r.Group("/api"))
+	groupAdmin(r.Group("/admin"))
 
 	return r
 }

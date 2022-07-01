@@ -10,12 +10,12 @@ type User struct {
 	Avatar   string
 }
 
-// 指定表名
+// TableName 指定表名
 func (u User) TableName() string {
 	return "users"
 }
 
-// 验证用户
+// Check 验证用户
 func (u User) Check() {
 
 }

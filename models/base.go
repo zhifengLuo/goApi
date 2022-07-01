@@ -16,7 +16,7 @@ type Model struct {
 
 func init() {
 	var err error
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=%s&parseTime=True&loc=Local", config.GetName("DB_USER"), config.GetName("DB_PWD"), config.GetName("DB_HOST"), config.GetName("DB_PORT"), config.GetName("DB_NAME"), config.GetName("DB_CHARSET"))
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=%s&parseTime=True&loc=Local", config.Get("DB_USER"), config.Get("DB_PWD"), config.Get("DB_HOST"), config.Get("DB_PORT"), config.Get("DB_NAME"), config.Get("DB_CHARSET"))
 	db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
 		NamingStrategy: schema.NamingStrategy{
 			// TablePrefix: "tb_",
