@@ -6,8 +6,8 @@ import (
 )
 
 type Pagination struct {
-	Page      int         `form:"page" json:"page,omitempty;query:page"`
-	PageSize  int         `form:"page_size" json:"page_size,omitempty;query:page_size"`
+	Page      int         `json:"page,omitempty;query:page"`
+	PageSize  int         `json:"page_size,omitempty;query:page_size"`
 	Total     int64       `json:"total"`
 	TotalPage int         `json:"total_page"`
 	List      interface{} `json:"list"`

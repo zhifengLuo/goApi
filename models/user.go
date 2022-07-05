@@ -6,10 +6,10 @@ type User struct {
 	Model
 	Username string
 	Nickname string
-	Password string
+	password string
 	Mobile   string
 	Sex      uint8 `json:"sex"`
-	status   uint8
+	Status   uint8
 }
 
 // TableName 指定表名
@@ -30,13 +30,14 @@ func (u User) Check() {
 
 func (u *User) GetList(username, mobile string, pagination *library.Pagination) *library.Pagination {
 	var rows *[]User
-	query := db.Select("id,username,nickname,sex,status,mobile,created_at")
+	query := db.Select("id,username,nickname,sex,status,mobile,created_at,updated_at")
 	if username != "" {
 		query.Where("username like ?", username+"%")
 	}
 	if mobile != "" {
 		query.Where("mobile like ?", mobile+"%")
 	}
+	query.Order("id desc")
 	query.Scopes(paginate(rows, pagination)).Find(&rows)
 	pagination.List = rows
 	return pagination
