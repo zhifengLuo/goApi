@@ -3,11 +3,11 @@ package models
 import (
 	"fmt"
 	"goapi/config"
+	"goapi/library"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
-	"net/http"
-	"strconv"
+	"math"
 	"time"
 )
 
@@ -36,33 +36,14 @@ func init() {
 	}
 }
 
-func Get(result interface{}, where map[string]interface{}) interface{} {
-	db.Where(where).First(&result)
-	return result
-}
-
-func GetAll(result interface{}, where map[string]interface{}) interface{} {
-	db.Where(where).Find(&result)
-	return result
-}
-
-func paginate(r *http.Request) func(db *gorm.DB) *gorm.DB {
+func paginate(value interface{}, pagination *library.Pagination) func(db *gorm.DB) *gorm.DB {
+	var total int64
+	db.Model(value).Count(&total)
+	pagination.Total = total
+	totalPages := int(math.Ceil(float64(total) / float64(pagination.PageSize)))
+	pagination.TotalPage = totalPages
+	offset := (pagination.Page - 1) * pagination.PageSize
 	return func(db *gorm.DB) *gorm.DB {
-		q := r.URL.Query()
-		page, _ := strconv.Atoi(q.Get("page"))
-		if page == 0 {
-			page = 1
-		}
-
-		pageSize, _ := strconv.Atoi(q.Get("page_size"))
-		switch {
-		case pageSize > 100:
-			pageSize = 100
-		case pageSize <= 0:
-			pageSize = 10
-		}
-
-		offset := (page - 1) * pageSize
-		return db.Offset(offset).Limit(pageSize)
+		return db.Offset(offset).Limit(pagination.PageSize)
 	}
 }

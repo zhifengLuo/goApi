@@ -3,17 +3,16 @@ package admin
 import (
 	"github.com/gin-gonic/gin"
 	"goapi/controllers"
+	"goapi/library"
 	"goapi/services"
-	"strconv"
 )
 
 func UserList(c *gin.Context) {
-	page, _ := strconv.Atoi(c.DefaultPostForm("page", "0"))
-	pageSize, _ := strconv.Atoi(c.PostForm("page_size"))
 	username := c.PostForm("username")
 	mobile := c.PostForm("mobile")
 	service := services.User{}
-	data := service.GetList(username, mobile, page, pageSize)
+	pagination := library.NewPagination(c)
+	data := service.GetList(username, mobile, pagination)
 	controllers.Success(c, data)
 }
 

@@ -1,11 +1,14 @@
 package services
 
-import "goapi/models"
+import (
+	"goapi/library"
+	"goapi/models"
+)
 
 type User struct {
 	Service *models.User
 }
 
-func (u *User) GetList(username, mobile string, page, pageSize int) interface{} {
-	return u.Service.GetList(username, mobile, page, pageSize)
+func (u *User) GetList(username, mobile string, pagination *library.Pagination) interface{} {
+	return u.Service.GetList(username, mobile, pagination)
 }

@@ -1,43 +1,32 @@
 package library
 
 import (
-	"math"
+	"github.com/gin-gonic/gin"
+	"strconv"
 )
 
 type Pagination struct {
-	page      int         `form:"page" json:"page,omitempty;query:page"`
-	pageSize  int         `form:"page_size" json:"limit,omitempty;query:page_size"`
-	total     int64       `json:"total"`
-	totalPage int         `json:"total_page"`
-	list      interface{} `json:"list"`
+	Page      int         `form:"page" json:"page,omitempty;query:page"`
+	PageSize  int         `form:"page_size" json:"page_size,omitempty;query:page_size"`
+	Total     int64       `json:"total"`
+	TotalPage int         `json:"total_page"`
+	List      interface{} `json:"list"`
 }
 
-func (p *Pagination) GetOffset() int {
-	return (p.page - 1) * p.pageSize
-}
-
-func (p *Pagination) TotalPage() int {
-	return int(math.Ceil(float64(p.total) / float64(p.pageSize)))
-}
-
-func (p *Pagination) Page() int {
-	if p.page == 0 {
-		p.page = 1
+func NewPagination(c *gin.Context) *Pagination {
+	var p = &Pagination{}
+	page, _ := strconv.Atoi(c.Query("page"))
+	if page == 0 {
+		page = 1
 	}
-	return p.page
-}
-
-func (p *Pagination) PageSize() int {
-	if p.pageSize == 0 {
-		p.pageSize = 10
+	p.Page = page
+	pageSize, _ := strconv.Atoi(c.Query("page_size"))
+	switch {
+	case pageSize > 100:
+		pageSize = 100
+	case pageSize <= 0:
+		pageSize = 10
 	}
-	return p.pageSize
-}
-
-func (p *Pagination) SetPage(page int) {
-	p.page = page
-}
-
-func (p *Pagination) SetPageSize(pageSize int) {
-	p.pageSize = pageSize
+	p.PageSize = pageSize
+	return p
 }

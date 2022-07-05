@@ -1,5 +1,7 @@
 package models
 
+import "goapi/library"
+
 type User struct {
 	Model
 	Username string
@@ -26,10 +28,8 @@ func (u User) Check() {
 // 修改密码
 // 更新信息
 
-func (u *User) GetList(username, mobile string, page, pageSize int) interface{} {
-	var total int64
+func (u *User) GetList(username, mobile string, pagination *library.Pagination) *library.Pagination {
 	var rows *[]User
-	data := make(map[string]interface{})
 	query := db.Select("id,username,nickname,sex,status,mobile,created_at")
 	if username != "" {
 		query.Where("username like ?", username+"%")
@@ -37,12 +37,7 @@ func (u *User) GetList(username, mobile string, page, pageSize int) interface{} 
 	if mobile != "" {
 		query.Where("mobile like ?", mobile+"%")
 	}
-	query.Model(&rows).Count(&total)
-	if page > 0 && pageSize > 0 {
-		query.Offset((page - 1) * pageSize).Limit(pageSize)
-	}
-	query.Find(&rows)
-	data["total"] = total
-	data["list"] = rows
-	return data
+	query.Scopes(paginate(rows, pagination)).Find(&rows)
+	pagination.List = rows
+	return pagination
 }
