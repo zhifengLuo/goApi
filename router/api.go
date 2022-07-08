@@ -6,5 +6,6 @@ import (
 )
 
 func groupApi(g *gin.RouterGroup) {
-	g.POST("/user/:id", api.GetUser)
+	g.GET("/user/info/:username", api.UserInfo)
+	g.POST("/user/register", api.UserRegister)
 }

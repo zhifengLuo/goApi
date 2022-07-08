@@ -7,5 +7,5 @@ import (
 
 func groupAdmin(g *gin.RouterGroup) {
 	g.POST("/user/list", admin.UserList)
-	g.POST("/user/detail/:id", admin.UserDetail)
+	g.GET("/user/detail/:id", admin.UserDetail)
 }

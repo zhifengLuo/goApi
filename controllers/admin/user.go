@@ -5,6 +5,7 @@ import (
 	"goapi/controllers"
 	"goapi/library"
 	"goapi/services"
+	"strconv"
 )
 
 func UserList(c *gin.Context) {
@@ -17,7 +18,11 @@ func UserList(c *gin.Context) {
 }
 
 func UserDetail(c *gin.Context) {
-
+	id, _ := strconv.Atoi(c.Param("id"))
+	username := c.Query("username")
+	service := services.User{}
+	data := service.GetDetail(id, username)
+	controllers.Success(c, data)
 }
 
 func UserSetPassword(c *gin.Context) {

@@ -3,7 +3,7 @@ CREATE TABLE `user` (
     `username` varchar(60) NOT NULL COMMENT '名称',
     `nickname` varchar(60) NOT NULL DEFAULT '' COMMENT '昵称',
     `sex` tinyint NOT NULL DEFAULT '1' COMMENT '性别，1男/2女/3其他',
-    `password` char(32) NOT NULL DEFAULT '' COMMENT '密码',
+    `password` varchar(60) NOT NULL DEFAULT '' COMMENT '密码',
     `mobile` varchar(20) NOT NULL DEFAULT '' COMMENT '手机',
     `created_at` datetime COMMENT '创建时间',
     `updated_at` datetime COMMENT '更新时间',

@@ -15,10 +15,10 @@ import (
 var db *gorm.DB
 
 type Model struct {
-	ID        uint `gorm:"primarykey" json:"id"`
+	ID        int `gorm:"primarykey" json:"id"`
 	CreatedAt LocalTime
-	UpdatedAt time.Time
-	DeletedAt gorm.DeletedAt `gorm:"index" json:"-"`
+	UpdatedAt LocalTime
+	deletedAt gorm.DeletedAt `gorm:"index"`
 }
 
 func init() {
