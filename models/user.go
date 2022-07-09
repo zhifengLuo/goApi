@@ -14,8 +14,8 @@ type User struct {
 	Username string `gorm:"unique"`
 	Nickname string
 	Password string `json:"-"`
-	Mobile   string `json:"-"`
-	Sex      uint8  `json:"sex"`
+	Mobile   string
+	Sex      uint8 `json:"sex"`
 	Status   uint8
 }
 
@@ -48,7 +48,7 @@ func (u *User) GetMobile() string {
 	if total == 0 {
 		return ""
 	}
-	return string(s[0:3]) + "****" + string(s[8:11])
+	return string(s[0:3]) + "****" + string(s[7:11])
 }
 
 func (u *User) SetPassword(password string) {
@@ -56,7 +56,7 @@ func (u *User) SetPassword(password string) {
 	u.Password = string(newPassword)
 }
 
-func CheckPassword(password, hash string) bool {
+func (u *User) CheckPassword(password, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 	return err == nil
 }
