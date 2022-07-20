@@ -28,7 +28,7 @@ type UserReg struct {
 }
 
 // TableName 指定表名
-func (u User) TableName() string {
+func (User) TableName() string {
 	return "user"
 }
 

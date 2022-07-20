@@ -29,16 +29,18 @@ CREATE TABLE `user_profile` (
 
 CREATE TABLE `user_token` (
     `id` int unsigned NOT NULL AUTO_INCREMENT,
-    `tokenable_type` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+    `tokenable_type` varchar(60) NOT NULL,
     `tokenable_id` int unsigned NOT NULL,
-    `token` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+    `token` varchar(64) NOT NULL,
     `last_used_at` timestamp NULL DEFAULT NULL,
     `created_at` timestamp NULL DEFAULT NULL,
     `updated_at` timestamp NULL DEFAULT NULL,
+    `expired_at` timestamp NULL DEFAULT NULL,
     PRIMARY KEY (`id`),
     UNIQUE KEY `unq_token` (`token`),
-    KEY `idx_tokenable` (`tokenable_type`,`tokenable_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='第三方认证';
+    KEY `idx_tokenable` (`tokenable_type`,`tokenable_id`),
+    KEY `idx_expired` (`expired_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户token';
 
 CREATE TABLE `user_oauth` (
     `id` int unsigned NOT NULL AUTO_INCREMENT,

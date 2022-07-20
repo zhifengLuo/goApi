@@ -28,17 +28,16 @@ func (u *User) Register(user *models.UserReg) interface{} {
 	return u.Model.Add(user)
 }
 
-func (u *User) LoginByUsername(username, password string) interface{} {
-	var user *models.User
+func (u *User) LoginByUsername(username, password string) (user *models.User, msg string) {
 	user = u.Model.GetByUsername(username)
 	if user.ID == 0 {
-		return 0
+		return nil, "账号不存在"
 	}
 	res := u.Model.CheckPassword(password, user.Password)
 	if res {
-		return user
+		return user, ""
 	}
-	return 1
+	return nil, "密码错误"
 }
 
 func (u *User) LoginByMoible(mobile, code string) interface{} {

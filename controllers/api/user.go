@@ -48,13 +48,25 @@ func UserLogin(c *gin.Context) {
 		return
 	}
 	service := services.User{}
-	data := service.LoginByUsername(param["username"], param["password"])
-	if data == 0 {
-		controllers.Failure(c, 100, "账号不存在")
-		return
-	} else if data == 1 {
-		controllers.Failure(c, 100, "密码错误")
+	data, msg := service.LoginByUsername(param["username"], param["password"])
+	if data == nil {
+		controllers.Failure(c, 100, msg)
 		return
 	}
+	sToken := services.UserToken{}
+	sToken.TokenCreate(services.TypeUser, data.ID)
 	controllers.Success(c, data)
+}
+
+func TestSet(c *gin.Context) {
+	//redis := library.NewRedis()
+	//ctx := context.Background()
+	//err := redis.Set(ctx, "abcd", "345890", 10*time.Second).Err()
+}
+
+func TestGet(c *gin.Context) {
+	token := c.Query("token")
+	sToken := services.UserToken{}
+	vars := sToken.TokenInfo(token)
+	controllers.Success(c, vars)
 }
