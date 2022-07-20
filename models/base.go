@@ -9,6 +9,7 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
 	"math"
+	"strings"
 	"time"
 )
 
@@ -53,6 +54,17 @@ type LocalTime struct {
 	time.Time
 }
 
+func (t *LocalTime) UnmarshalJSON(data []byte) error {
+	if string(data) == "null" {
+		return nil
+	}
+	var err error
+	str := string(data)
+	timeStr := strings.Trim(str, "\"")
+	t1, err := time.Parse("2006-01-02 15:04:05", timeStr)
+	*t = LocalTime{t1}
+	return err
+}
 func (t LocalTime) MarshalJSON() ([]byte, error) {
 	formatted := fmt.Sprintf("\"%s\"", t.Format("2006-01-02 15:04:05"))
 	return []byte(formatted), nil
