@@ -64,6 +64,11 @@ func TestSet(c *gin.Context) {
 }
 
 func TestGet(c *gin.Context) {
-	vars := 123
-	controller.Success(c, vars)
+	e := model.NewEnforce()
+	sub := c.Query("sub")
+	obj := c.Query("obj")
+	act := c.Query("act")
+
+	res, _ := e.Enforce(sub, obj, act)
+	controller.Success(c, res)
 }
