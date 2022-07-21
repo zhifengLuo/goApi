@@ -3,14 +3,14 @@ package middleware
 import (
 	"github.com/casbin/casbin/v2"
 	"github.com/gin-gonic/gin"
-	"goapi/models"
+	"goapi/model"
 	_ "gorm.io/driver/mysql"
 	"net/http"
 )
 
 // NewAuthorizer returns the authorizer, uses a Casbin enforcer as input
 func NewAuthorizer() gin.HandlerFunc {
-	e := models.NewEnforce()
+	e := model.NewEnforce()
 	a := &BasicAuthorizer{enforcer: e}
 
 	return func(c *gin.Context) {

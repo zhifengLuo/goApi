@@ -2,7 +2,7 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	"goapi/controllers/admin"
+	"goapi/controller/admin"
 )
 
 func groupAdmin(g *gin.RouterGroup) {

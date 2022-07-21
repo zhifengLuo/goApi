@@ -1,4 +1,4 @@
-package models
+package model
 
 type AreaCity struct {
 	// ID uint   `json:"id" gorm:"primary_key"`

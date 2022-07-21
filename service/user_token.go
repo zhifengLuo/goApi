@@ -1,10 +1,10 @@
-package services
+package service
 
 import (
 	"context"
 	"encoding/json"
 	"goapi/library"
-	"goapi/models"
+	"goapi/model"
 	"time"
 )
 
@@ -16,12 +16,12 @@ const (
 )
 
 type UserToken struct {
-	Model *models.UserToken
+	Model *model.UserToken
 }
 
 func (u *UserToken) CreateToken(tokenableType string, tokenableId int) string {
 	tokenType := TypeUser
-	var row models.UserToken
+	var row model.UserToken
 	switch tokenableType {
 	case TypeAdmin:
 		tokenType = TypeAdmin
@@ -46,7 +46,7 @@ func (u *UserToken) CreateToken(tokenableType string, tokenableId int) string {
 	return ""
 }
 
-func (u *UserToken) tokenInfo(token string) (row *models.UserToken) {
+func (u *UserToken) tokenInfo(token string) (row *model.UserToken) {
 	redis := library.NewRedis()
 	ctx := context.Background()
 	value, _ := redis.Get(ctx, CacheKey+token).Result()

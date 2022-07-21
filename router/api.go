@@ -2,7 +2,7 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	"goapi/controllers/api"
+	"goapi/controller/api"
 	"goapi/middleware"
 )
 

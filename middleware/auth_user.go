@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"github.com/gin-gonic/gin"
-	"goapi/services"
+	"goapi/service"
 	"strings"
 )
 
@@ -14,7 +14,7 @@ func AuthUser() gin.HandlerFunc {
 			c.AbortWithStatusJSON(401, gin.H{"code": 401, "error": "access deny"})
 		} else {
 			token := tokenArr[1]
-			s := services.UserToken{}
+			s := service.UserToken{}
 			if !s.CheckUser(token) {
 				c.AbortWithStatusJSON(401, gin.H{"code": 401, "error": "access denied"})
 			}

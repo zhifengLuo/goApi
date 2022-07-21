@@ -1,12 +1,12 @@
-package services
+package service
 
 import (
 	"goapi/library"
-	"goapi/models"
+	"goapi/model"
 )
 
 type User struct {
-	Model *models.User
+	Model *model.User
 }
 
 func (u *User) GetList(username, mobile string, pagination *library.Pagination) interface{} {
@@ -14,7 +14,7 @@ func (u *User) GetList(username, mobile string, pagination *library.Pagination) 
 }
 
 func (u *User) GetDetail(id int, username string) interface{} {
-	var user *models.User
+	var user *model.User
 	if username != "" {
 		user = u.Model.GetByUsername(username)
 	} else {
@@ -24,11 +24,11 @@ func (u *User) GetDetail(id int, username string) interface{} {
 	return user
 }
 
-func (u *User) Register(user *models.UserReg) interface{} {
+func (u *User) Register(user *model.UserReg) interface{} {
 	return u.Model.Add(user)
 }
 
-func (u *User) LoginByUsername(username, password string) (user *models.User, msg string) {
+func (u *User) LoginByUsername(username, password string) (user *model.User, msg string) {
 	user = u.Model.GetByUsername(username)
 	if user.ID == 0 {
 		return nil, "账号不存在"

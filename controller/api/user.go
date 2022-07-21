@@ -2,9 +2,9 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"goapi/controllers"
-	"goapi/models"
-	"goapi/services"
+	"goapi/controller"
+	"goapi/model"
+	"goapi/service"
 )
 
 type UserReg struct {
@@ -17,22 +17,22 @@ type UserReg struct {
 
 func UserInfo(c *gin.Context) {
 	username := c.Param("username")
-	service := services.User{}
+	service := service.User{}
 	data := service.GetDetail(0, username)
-	controllers.Success(c, data)
+	controller.Success(c, data)
 }
 
 func UserRegister(c *gin.Context) {
-	var param *models.UserReg
+	var param *model.UserReg
 	err := c.ShouldBindJSON(&param)
 
 	if err != nil {
-		controllers.Failure(c, 100, err.Error())
+		controller.Failure(c, 100, err.Error())
 		return
 	}
-	service := services.User{}
+	service := service.User{}
 	data := service.Register(param)
-	controllers.Success(c, data)
+	controller.Success(c, data)
 }
 
 func UserLogin(c *gin.Context) {
@@ -40,30 +40,30 @@ func UserLogin(c *gin.Context) {
 	err := c.ShouldBindJSON(&param)
 
 	if err != nil {
-		controllers.Failure(c, 100, err.Error())
+		controller.Failure(c, 100, err.Error())
 		return
 	}
 	if param["username"] == "" || param["password"] == "" {
-		controllers.Failure(c, 100, "参数错误")
+		controller.Failure(c, 100, "参数错误")
 		return
 	}
-	service := services.User{}
-	data, msg := service.LoginByUsername(param["username"], param["password"])
+	sUser := service.User{}
+	data, msg := sUser.LoginByUsername(param["username"], param["password"])
 	if data == nil {
-		controllers.Failure(c, 100, msg)
+		controller.Failure(c, 100, msg)
 		return
 	}
-	sToken := services.UserToken{}
-	sToken.CreateToken(services.TypeUser, data.ID)
-	controllers.Success(c, data)
+	sToken := service.UserToken{}
+	sToken.CreateToken(service.TypeUser, data.ID)
+	controller.Success(c, data)
 }
 
 func TestSet(c *gin.Context) {
 	vars := 456
-	controllers.Success(c, vars)
+	controller.Success(c, vars)
 }
 
 func TestGet(c *gin.Context) {
 	vars := 123
-	controllers.Success(c, vars)
+	controller.Success(c, vars)
 }
