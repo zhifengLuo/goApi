@@ -54,19 +54,16 @@ func UserLogin(c *gin.Context) {
 		return
 	}
 	sToken := services.UserToken{}
-	sToken.TokenCreate(services.TypeUser, data.ID)
+	sToken.CreateToken(services.TypeUser, data.ID)
 	controllers.Success(c, data)
 }
 
 func TestSet(c *gin.Context) {
-	//redis := library.NewRedis()
-	//ctx := context.Background()
-	//err := redis.Set(ctx, "abcd", "345890", 10*time.Second).Err()
+	vars := 456
+	controllers.Success(c, vars)
 }
 
 func TestGet(c *gin.Context) {
-	token := c.Query("token")
-	sToken := services.UserToken{}
-	vars := sToken.TokenInfo(token)
+	vars := 123
 	controllers.Success(c, vars)
 }

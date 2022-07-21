@@ -19,7 +19,7 @@ type UserToken struct {
 	Model *models.UserToken
 }
 
-func (u *UserToken) TokenCreate(tokenableType string, tokenableId int) string {
+func (u *UserToken) CreateToken(tokenableType string, tokenableId int) string {
 	tokenType := TypeUser
 	var row models.UserToken
 	switch tokenableType {
@@ -46,7 +46,7 @@ func (u *UserToken) TokenCreate(tokenableType string, tokenableId int) string {
 	return ""
 }
 
-func (u *UserToken) TokenInfo(token string) (row *models.UserToken) {
+func (u *UserToken) tokenInfo(token string) (row *models.UserToken) {
 	redis := library.NewRedis()
 	ctx := context.Background()
 	value, _ := redis.Get(ctx, CacheKey+token).Result()
@@ -60,8 +60,21 @@ func (u *UserToken) TokenInfo(token string) (row *models.UserToken) {
 	return row
 }
 
-func (u *UserToken) GetUser(token string) {
+func (u *UserToken) CheckUser(token string) bool {
+	row := u.tokenInfo(token)
+	if row.ID > 0 && row.TokenableType == TypeUser {
+		return true
+	}
+	return false
+}
 
+func (u *UserToken) GetUser(token string) interface{} {
+	row := u.tokenInfo(token)
+	if row.ID > 0 && row.TokenableType == TypeUser {
+		su := User{}
+		return su.GetDetail(row.TokenableId, "")
+	}
+	return false
 }
 
 func (u *UserToken) GetAdmin(token string) {
