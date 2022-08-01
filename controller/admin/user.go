@@ -11,7 +11,7 @@ import (
 func UserList(c *gin.Context) {
 	username := c.PostForm("username")
 	mobile := c.PostForm("mobile")
-	service := service.User{}
+	service := service.UserService{}
 	pagination := library.NewPagination(c)
 	data := service.GetList(username, mobile, pagination)
 	controller.Success(c, data)
@@ -20,7 +20,7 @@ func UserList(c *gin.Context) {
 func UserDetail(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 	username := c.Query("username")
-	service := service.User{}
+	service := service.UserService{}
 	data := service.GetDetail(id, username)
 	controller.Success(c, data)
 }

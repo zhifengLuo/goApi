@@ -15,11 +15,11 @@ const (
 	TypeEmployee = "employee"
 )
 
-type UserToken struct {
+type UserTokenSevice struct {
 	Model *model.UserToken
 }
 
-func (u *UserToken) CreateToken(tokenableType string, tokenableId int) string {
+func (u *UserTokenSevice) CreateToken(tokenableType string, tokenableId int) string {
 	tokenType := TypeUser
 	var row model.UserToken
 	switch tokenableType {
@@ -46,7 +46,7 @@ func (u *UserToken) CreateToken(tokenableType string, tokenableId int) string {
 	return ""
 }
 
-func (u *UserToken) tokenInfo(token string) (row *model.UserToken) {
+func (u *UserTokenSevice) tokenInfo(token string) (row *model.UserToken) {
 	redis := library.NewRedis()
 	ctx := context.Background()
 	value, _ := redis.Get(ctx, CacheKey+token).Result()
@@ -60,7 +60,7 @@ func (u *UserToken) tokenInfo(token string) (row *model.UserToken) {
 	return row
 }
 
-func (u *UserToken) CheckUser(token string) bool {
+func (u *UserTokenSevice) CheckUser(token string) bool {
 	row := u.tokenInfo(token)
 	if row.ID > 0 && row.TokenableType == TypeUser {
 		return true
@@ -68,15 +68,15 @@ func (u *UserToken) CheckUser(token string) bool {
 	return false
 }
 
-func (u *UserToken) GetUser(token string) interface{} {
+func (u *UserTokenSevice) GetUser(token string) interface{} {
 	row := u.tokenInfo(token)
 	if row.ID > 0 && row.TokenableType == TypeUser {
-		su := User{}
+		su := UserService{}
 		return su.GetDetail(row.TokenableId, "")
 	}
 	return false
 }
 
-func (u *UserToken) GetAdmin(token string) {
+func (u *UserTokenSevice) GetAdmin(token string) {
 
 }

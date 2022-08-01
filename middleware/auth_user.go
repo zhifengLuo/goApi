@@ -14,7 +14,7 @@ func AuthUser() gin.HandlerFunc {
 			c.AbortWithStatusJSON(401, gin.H{"code": 401, "error": "access deny"})
 		} else {
 			token := tokenArr[1]
-			s := service.UserToken{}
+			s := service.UserTokenSevice{}
 			if !s.CheckUser(token) {
 				c.AbortWithStatusJSON(401, gin.H{"code": 401, "error": "access denied"})
 			}

@@ -17,7 +17,7 @@ type UserReg struct {
 
 func UserInfo(c *gin.Context) {
 	username := c.Param("username")
-	service := service.User{}
+	service := service.UserService{}
 	data := service.GetDetail(0, username)
 	controller.Success(c, data)
 }
@@ -30,7 +30,7 @@ func UserRegister(c *gin.Context) {
 		controller.Failure(c, 100, err.Error())
 		return
 	}
-	service := service.User{}
+	service := service.UserService{}
 	data := service.Register(param)
 	controller.Success(c, data)
 }
@@ -47,13 +47,13 @@ func UserLogin(c *gin.Context) {
 		controller.Failure(c, 100, "参数错误")
 		return
 	}
-	sUser := service.User{}
+	sUser := service.UserService{}
 	data, msg := sUser.LoginByUsername(param["username"], param["password"])
 	if data == nil {
 		controller.Failure(c, 100, msg)
 		return
 	}
-	sToken := service.UserToken{}
+	sToken := service.UserTokenSevice{}
 	sToken.CreateToken(service.TypeUser, data.ID)
 	controller.Success(c, data)
 }
