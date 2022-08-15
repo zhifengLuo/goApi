@@ -94,7 +94,7 @@ func (u *User) GetList(username, mobile string, pagination *library.Pagination) 
 	}
 	query.Order("id desc")
 	query.Scopes(paginate(rows, pagination)).Find(&rows)
-	pagination.List = rows
+	pagination.Data = rows
 	return pagination
 }
 

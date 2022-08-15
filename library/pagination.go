@@ -10,7 +10,7 @@ type Pagination struct {
 	PageSize  int         `json:"page_size,omitempty;query:page_size"`
 	Total     int64       `json:"total"`
 	TotalPage int         `json:"total_page"`
-	List      interface{} `json:"list"`
+	Data      interface{} `json:"data"`
 }
 
 func NewPagination(c *gin.Context) *Pagination {

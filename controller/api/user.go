@@ -54,8 +54,11 @@ func UserLogin(c *gin.Context) {
 		return
 	}
 	sToken := service.UserTokenSevice{}
-	sToken.CreateToken(service.TypeUser, data.ID)
-	controller.Success(c, data)
+	token := sToken.CreateToken(service.TypeUser, data.ID)
+	res := make(map[string]interface{})
+	res["token"] = token
+	res["user"] = data
+	controller.Success(c, res)
 }
 
 func TestSet(c *gin.Context) {

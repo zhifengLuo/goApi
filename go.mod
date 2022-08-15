@@ -6,8 +6,8 @@ require (
 	github.com/casbin/casbin/v2 v2.37.4
 	github.com/casbin/gorm-adapter/v3 v3.7.2
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
-	github.com/gin-gonic/gin v1.7.1
-	github.com/go-playground/validator/v10 v10.5.0 // indirect
+	github.com/gin-contrib/cors v1.4.0
+	github.com/gin-gonic/gin v1.8.1
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/go-sql-driver/mysql v1.6.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
